@@ -2,6 +2,19 @@
 
 ## Deploying infrastructure
 
+### Selecting a _workspace_
+This project uses the feature provided by Terraform to select a workspace. I'm leveraging this feature in order to enable the code to be compatible with multiples environments. In other words, based on the workspaces this code can be deployed in, for instance, **development** or **production**. 
+
+Creating a new workspace
+```
+terraform workspace new $ENVIRONMENT
+```
+
+Selecting an existing workspace
+```
+terraform workspace select $ENVIRONMENT
+```
+
 ### Initialize the project
 
 _**Precondition:** Remember to stay logged in before to follow with the next steps._
