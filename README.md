@@ -3,7 +3,14 @@
 ## Deploying infrastructure
 
 ### Selecting a _workspace_
-This project uses the feature provided by Terraform to select a workspace. I'm leveraging this feature in order to enable the code to be compatible with multiples environments. In other words, based on the workspaces this code can be deployed in, for instance, **development** or **production**. 
+This project uses the feature provided by Terraform to select a workspace. I'm leveraging this feature in order to enable the code to be compatible with multiples environments. In other words, based on the workspaces this code can be deployed in, for instance, _development_ as **dev** or _production_ as **prod**. In this case I'm using `dev` and `prod`. 
+
+Setting dev environment
+
+```
+export ENVIRONMENT=dev
+```
+
 
 Creating a new workspace
 ```
@@ -32,7 +39,7 @@ terraform init \
 ```
 ### Running tests
 
-For testing the infrastructure I used terraform compliance, for more details visit the official documentation https://terraform-compliance.com. 
+For testing the infrastructure I used terraform compliance, for more details visit the official documentation https://terraform-compliance.com. Test files are located in **_tests_** folder.
 
 **Important:**
 For running tests, I propose to create a new workspace dedicated to this. Specifically, I created a **tst** workspace that will allow generating a complete plan every time. Also, the variables of this workspace should exist in the `variables file`.
@@ -52,8 +59,8 @@ Generate a plan to tests
 terraform plan -out terraform.out
 terraform show -json terraform.out > plan.json
 ```
-Running tests
+Running tests 
 ```
-terraform_compliance -p plan.json -f tests
+terraform-compliance -p plan.json -f tests
 ```
 
