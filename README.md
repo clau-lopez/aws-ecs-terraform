@@ -30,3 +30,30 @@ terraform init \
 -backend-config="key=$STATE_FILE_NAME"
 
 ```
+### Running tests
+
+For testing the infrastructure I used terraform compliance, for more details visit the official documentation https://terraform-compliance.com. 
+
+**Important:**
+For running tests, I propose to create a new workspace dedicated to this. Specifically, I created a **tst** workspace that will allow generating a complete plan every time. Also, the variables of this workspace should exist in the `variables file`.
+
+Creating workspace **tst**
+```
+terraform workspace new tst
+```
+
+Selecting workspace **tst**
+```
+terraform workspace select tst
+```
+
+Generate a plan to tests
+```
+terraform plan -out terraform.out
+terraform show -json terraform.out > plan.json
+```
+Running tests
+```
+terraform_compliance -p plan.json -f tests
+```
+
