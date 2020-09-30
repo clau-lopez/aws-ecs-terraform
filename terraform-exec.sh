@@ -17,4 +17,17 @@ terraform validate
 
 echo " "
 echo "Run -> Plan"
-terraform plan
+terraform plan -out terraform.out
+terraform show -json terraform.out > plan.json
+
+echo " "
+echo "Run -> Tests"
+function terraform_compliance { docker run --rm -v $(pwd):/target -i -t eerkunt/terraform-compliance "$@"; }
+terraform_compliance -p plan.json -f tests
+
+echo " "
+echo "Cleaning..."
+rm -rf plan.json terraform.out
+
+echo " "
+echo "************** Execution Terminated *************"
