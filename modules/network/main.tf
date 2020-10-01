@@ -28,3 +28,15 @@ resource "aws_subnet" "public" {
     Environment = "${terraform.workspace}"
   }
 }
+
+# Private Subnets
+resource "aws_subnet" "private" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = element(lookup(var.private_cidrs, terraform.workspace), count.index)
+  availability_zone = element(var.availability_zones, count.index)
+  count             = length(lookup(var.private_cidrs, terraform.workspace))
+  tags = {
+    Name        = "${var.application_name}-private-subnet-${count.index}-${terraform.workspace}"
+    Environment = "${terraform.workspace}"
+  }
+}

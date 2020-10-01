@@ -40,7 +40,7 @@ Feature: All resources for network should be created
 
         Examples:
       | tags        | value               |
-      | Name        | .+[0]-(tst\|dev)$   |
+      | Name        | .+-public-subnet-[0]-(tst\|dev)$   |
       | Environment | ^(tst\|dev\)$       |
     
     Scenario Outline: Public subnet for availability zone B should be created
@@ -57,5 +57,40 @@ Feature: All resources for network should be created
 
         Examples:
       | tags        | value                |
-      | Name        | .+[1]-(tst\|dev)$    |
+      | Name        | .+-public-subnet-[1]-(tst\|dev)$    |
       | Environment | ^(tst\|dev\)$        |
+      
+    Scenario Outline: Private subnet for availability zone A should be created
+        Given I have aws_subnet resource configured
+        When its address is "module.network.aws_subnet.private"
+        And its type is aws_subnet
+        And its index is 0
+        And its cidr_block is "10.0.0.0/24" 
+        And its availability_zone is "us-west-2a"
+        And its map_public_ip_on_launch is false
+        And it contains tags
+        Then it must contain <tags>
+        And its value must match the "<value>" regex
+
+        Examples:
+      | tags        | value                                |
+      | Name        | .+-private-subnet-[0]-(tst\|dev)$    |
+      | Environment | ^(tst\|dev\)$                        |
+
+    
+    Scenario Outline: Private subnet for availability zone B should be created
+        Given I have aws_subnet resource configured
+        When its address is "module.network.aws_subnet.private"
+        And its type is aws_subnet
+        And its index is 1
+        And its cidr_block is "10.0.1.0/24" 
+        And its availability_zone is "us-west-2b"
+        And its map_public_ip_on_launch is false
+        And it contains tags
+        Then it must contain <tags>
+        And its value must match the "<value>" regex
+
+        Examples:
+      | tags        | value                                |
+      | Name        | .+-private-subnet-[1]-(tst\|dev)$    |
+      | Environment | ^(tst\|dev\)$                        |

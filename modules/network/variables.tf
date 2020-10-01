@@ -16,3 +16,8 @@ variable "public_cidrs" {
   type        = map(list(string))
   description = "This is a map with the CIDR blocks for public subnets"
 }
+variable "private_cidrs" {
+  type        = map(list(string))
+  description = "This is a map with the CIDR blocks for private subnets"
+}
+
