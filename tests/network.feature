@@ -7,3 +7,11 @@ Feature: All resources for network should be created
         And it has tags
         Then it must contain Environment
         And its value must be "dev"
+
+    Scenario: Internet Gateway should be created
+        Given I have aws_internet_gateway resource configured
+        When its name is "main"
+        And its type is "aws_internet_gateway"
+        And it has tags
+        Then it must contain Environment
+        And its value must be "dev"
