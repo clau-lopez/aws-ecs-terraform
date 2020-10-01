@@ -11,7 +11,7 @@ Feature: All resources for network should be created
 
         Examples:
       | tags        | value               |
-      | Name        | .+vpc-(tst\|dev)$      |
+      | Name        | .+vpc-(tst\|dev)$   |
       | Environment | ^(tst\|dev\)$       |
 
     Scenario Outline: Internet Gateway should be created
@@ -24,7 +24,7 @@ Feature: All resources for network should be created
 
         Examples:
       | tags        | value               |
-      | Name        | .+igw-(tst\|dev)$      |
+      | Name        | .+igw-(tst\|dev)$   |
       | Environment | ^(tst\|dev\)$       |
 
     Scenario Outline: Public subnet for availability zone A should be created
@@ -39,9 +39,9 @@ Feature: All resources for network should be created
         And its value must match the "<value>" regex
 
         Examples:
-      | tags        | value               |
-      | Name        | .+-public-subnet-[0]-(tst\|dev)$   |
-      | Environment | ^(tst\|dev\)$       |
+      | tags        | value                            |
+      | Name        | .+-public-subnet-0-(tst\|dev)$   |
+      | Environment | ^(tst\|dev\)$                    |
     
     Scenario Outline: Public subnet for availability zone B should be created
         Given I have aws_subnet resource configured
@@ -56,9 +56,9 @@ Feature: All resources for network should be created
         And its value must match the "<value>" regex
 
         Examples:
-      | tags        | value                |
-      | Name        | .+-public-subnet-[1]-(tst\|dev)$    |
-      | Environment | ^(tst\|dev\)$        |
+      | tags        | value                             |
+      | Name        | .+-public-subnet-1-(tst\|dev)$    |
+      | Environment | ^(tst\|dev\)$                     |
       
     Scenario Outline: Private subnet for availability zone A should be created
         Given I have aws_subnet resource configured
@@ -73,9 +73,9 @@ Feature: All resources for network should be created
         And its value must match the "<value>" regex
 
         Examples:
-      | tags        | value                                |
-      | Name        | .+-private-subnet-[0]-(tst\|dev)$    |
-      | Environment | ^(tst\|dev\)$                        |
+      | tags        | value                              |
+      | Name        | .+-private-subnet-0-(tst\|dev)$    |
+      | Environment | ^(tst\|dev\)$                      |
 
     
     Scenario Outline: Private subnet for availability zone B should be created
@@ -92,5 +92,60 @@ Feature: All resources for network should be created
 
         Examples:
       | tags        | value                                |
-      | Name        | .+-private-subnet-[1]-(tst\|dev)$    |
+      | Name        | .+-private-subnet-1-(tst\|dev)$      |
       | Environment | ^(tst\|dev\)$                        |
+
+    Scenario Outline: Route table for public subnet in availability zone A should be created
+        Given I have aws_route_table resource configured
+        When its address is "module.network.aws_route_table.public"
+        And its type is "aws_route_table"
+        And its index is 0
+        And it contains tags
+        Then it must contain <tags>
+        And its value must match the "<value>" regex
+
+        Examples:
+      | tags        | value                                |
+      | Name        | .+-route-table-public-0-(tst\|dev)$  |
+      | Environment | ^(tst\|dev\)$                        |
+
+    Scenario Outline: Route table for public subnet in availability zone B should be created
+        Given I have aws_route_table resource configured
+        When its address is "module.network.aws_route_table.public"
+        And its type is "aws_route_table"
+        And its index is 1
+        And it contains tags
+        Then it must contain <tags>
+        And its value must match the "<value>" regex
+
+        Examples:
+      | tags        | value                                |
+      | Name        | .+-route-table-public-1-(tst\|dev)$  |
+      | Environment | ^(tst\|dev\)$                        |
+
+    Scenario: Route to public subnet in availability zone A should be created
+        Given I have aws_route resource configured
+        When its address is "module.network.aws_route.public"
+        And its type is "aws_route"
+        And its index is 0
+        And its destination_cidr_block is "0.0.0.0/0"
+
+
+    Scenario: Route to public subnet in availability zone B should be created
+        Given I have aws_route resource configured
+        When its address is "module.network.aws_route.public"
+        And its type is "aws_route"
+        And its index is 1
+        And its destination_cidr_block is "0.0.0.0/0"
+
+    Scenario: Route table association to public subnet in availability zone A should be created
+        Given I have aws_route_table_association resource configured
+        When its address is "module.network.aws_route_table_association.public"
+        And its type is "aws_route_table_association"
+        And its index is 0
+
+    Scenario: Route table association to public subnet in availability zone B should be created
+        Given I have aws_route_table_association resource configured
+        When its address is "module.network.aws_route_table_association.public"
+        And its type is "aws_route_table_association"
+        And its index is 1

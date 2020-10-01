@@ -40,3 +40,26 @@ resource "aws_subnet" "private" {
     Environment = "${terraform.workspace}"
   }
 }
+
+# Route table for public subnets
+resource "aws_route_table" "public" {
+  count  = length(lookup(var.public_cidrs, terraform.workspace))
+  vpc_id = aws_vpc.main.id
+  tags = {
+    Name        = "${var.application_name}-route-table-public-${count.index}-${terraform.workspace}"
+    Environment = "${terraform.workspace}"
+  }
+}
+
+resource "aws_route" "public" {
+  count                  = length(compact(lookup(var.public_cidrs, terraform.workspace)))
+  route_table_id         = element(aws_route_table.public.*.id, count.index)
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = element(aws_internet_gateway.main.*.id, count.index)
+}
+
+resource "aws_route_table_association" "public" {
+  count          = length(lookup(var.public_cidrs, terraform.workspace))
+  subnet_id      = element(aws_subnet.public.*.id, count.index)
+  route_table_id = element(aws_route_table.public.*.id, count.index)
+}
