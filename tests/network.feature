@@ -177,3 +177,30 @@ Feature: All resources for network should be created
       | tags        | value                             |
       | Name        | .+-eip-1-(tst\|dev)$              |
       | Environment | ^(tst\|dev\)$                     |
+    
+    
+    Scenario Outline: NAT Gateway in availability zone A should be created
+        Given I have aws_nat_gateway resource configured
+        When its address is "module.network.aws_nat_gateway.nat"
+        And its index is 0
+        And it contains tags
+        Then it must contain <tags>
+        And its value must match the "<value>" regex
+
+        Examples:
+      | tags        | value                             |
+      | Name        | .+-ngw-0-(tst\|dev)$              |
+      | Environment | ^(tst\|dev\)$                     |
+
+    Scenario Outline: NAT Gateway in availability zone B should be created
+        Given I have aws_nat_gateway resource configured
+        When its address is "module.network.aws_nat_gateway.nat"
+        And its index is 1
+        And it contains tags
+        Then it must contain <tags>
+        And its value must match the "<value>" regex
+
+        Examples:
+      | tags        | value                             |
+      | Name        | .+-ngw-1-(tst\|dev)$              |
+      | Environment | ^(tst\|dev\)$                     |

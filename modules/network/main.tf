@@ -73,3 +73,16 @@ resource "aws_eip" "eip" {
     Environment = "${terraform.workspace}"
   }
 }
+
+# NAT Gateway
+resource "aws_nat_gateway" "nat" {
+  count         = length(lookup(var.private_cidrs, terraform.workspace))
+  allocation_id = element(aws_eip.eip.*.id, count.index)
+  subnet_id     = element(aws_subnet.public.*.id, count.index)
+  depends_on    = [aws_internet_gateway.main]
+
+  tags = {
+    Name        = "${var.application_name}-ngw-${count.index}-${terraform.workspace}"
+    Environment = "${terraform.workspace}"
+  }
+}
