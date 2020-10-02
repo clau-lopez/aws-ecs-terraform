@@ -204,3 +204,29 @@ Feature: All resources for network should be created
       | tags        | value                             |
       | Name        | .+-ngw-1-(tst\|dev)$              |
       | Environment | ^(tst\|dev\)$                     |
+
+    Scenario: Route to private subnet in availability zone A should be created
+        Given I have aws_route resource configured
+        When its address is "module.network.aws_route.private"
+        And its type is "aws_route"
+        And its index is 0
+        And its destination_cidr_block is "0.0.0.0/0"
+    
+    Scenario: Route to private subnet in availability zone B should be created
+        Given I have aws_route resource configured
+        When its address is "module.network.aws_route.private"
+        And its type is "aws_route"
+        And its index is 1
+        And its destination_cidr_block is "0.0.0.0/0"
+      
+    Scenario: Route table association to private subnet in availability zone A should be created
+        Given I have aws_route_table_association resource configured
+        When its address is "module.network.aws_route_table_association.private"
+        And its type is "aws_route_table_association"
+        And its index is 0
+
+    Scenario: Route table association to private subnet in availability zone B should be created
+        Given I have aws_route_table_association resource configured
+        When its address is "module.network.aws_route_table_association.private"
+        And its type is "aws_route_table_association"
+        And its index is 1

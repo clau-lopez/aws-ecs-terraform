@@ -86,3 +86,26 @@ resource "aws_nat_gateway" "nat" {
     Environment = "${terraform.workspace}"
   }
 }
+
+# Route table for private subnets
+resource "aws_route_table" "private" {
+  count  = length(lookup(var.private_cidrs, terraform.workspace))
+  vpc_id = aws_vpc.main.id
+  tags = {
+    Name        = "${var.application_name}-route-table-private-${count.index}-${terraform.workspace}"
+    Environment = "${terraform.workspace}"
+  }
+}
+
+resource "aws_route" "private" {
+  count                  = length(compact(lookup(var.private_cidrs, terraform.workspace)))
+  route_table_id         = element(aws_route_table.private.*.id, count.index)
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = element(aws_nat_gateway.nat.*.id, count.index)
+}
+
+resource "aws_route_table_association" "private" {
+  count          = length(lookup(var.private_cidrs, terraform.workspace))
+  subnet_id      = element(aws_subnet.private.*.id, count.index)
+  route_table_id = element(aws_route_table.private.*.id, count.index)
+}
