@@ -63,3 +63,13 @@ resource "aws_route_table_association" "public" {
   subnet_id      = element(aws_subnet.public.*.id, count.index)
   route_table_id = element(aws_route_table.public.*.id, count.index)
 }
+
+# Elastic IP
+resource "aws_eip" "eip" {
+  count = length(lookup(var.private_cidrs, terraform.workspace))
+  vpc   = true
+  tags = {
+    Name        = "${var.application_name}-eip-${count.index}-${terraform.workspace}"
+    Environment = "${terraform.workspace}"
+  }
+}

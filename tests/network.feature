@@ -149,3 +149,31 @@ Feature: All resources for network should be created
         When its address is "module.network.aws_route_table_association.public"
         And its type is "aws_route_table_association"
         And its index is 1
+
+    Scenario Outline: Elastic IP for NAT Gateway in availability zone A should be created
+        Given i have aws_eip resource configured
+        When its name is "eip"
+        And its index is 0
+        And its vpc is true
+        And it contains tags
+        Then it must contain <tags>
+        And its value must match the "<value>" regex
+
+        Examples:
+      | tags        | value                             |
+      | Name        | .+-eip-0-(tst\|dev)$              |
+      | Environment | ^(tst\|dev\)$                     |
+
+    Scenario Outline: Elastic IP for NAT Gateway in availability zone B should be created
+        Given i have aws_eip resource configured
+        When its name is "eip"
+        And its index is 1
+        And its vpc is true
+        And it contains tags
+        Then it must contain <tags>
+        And its value must match the "<value>" regex
+
+        Examples:
+      | tags        | value                             |
+      | Name        | .+-eip-1-(tst\|dev)$              |
+      | Environment | ^(tst\|dev\)$                     |
