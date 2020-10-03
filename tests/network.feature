@@ -32,7 +32,7 @@ Feature: All resources for network should be created
         When its address is "module.network.aws_subnet.public"
         And its index is 0
         And its cidr_block is "10.0.2.0/24" 
-        And its availability_zone is "us-west-2a"
+        And its availability_zone is "us-west-1a"
         And its map_public_ip_on_launch is true
         And it contains tags
         Then it must contain <tags>
@@ -49,7 +49,7 @@ Feature: All resources for network should be created
         And its type is aws_subnet
         And its index is 1
         And its cidr_block is "10.0.3.0/24" 
-        And its availability_zone is "us-west-2b"
+        And its availability_zone is "us-west-1b"
         And its map_public_ip_on_launch is true
         And it contains tags
         Then it must contain <tags>
@@ -66,7 +66,7 @@ Feature: All resources for network should be created
         And its type is aws_subnet
         And its index is 0
         And its cidr_block is "10.0.0.0/24" 
-        And its availability_zone is "us-west-2a"
+        And its availability_zone is "us-west-1a"
         And its map_public_ip_on_launch is false
         And it contains tags
         Then it must contain <tags>
@@ -84,7 +84,7 @@ Feature: All resources for network should be created
         And its type is aws_subnet
         And its index is 1
         And its cidr_block is "10.0.1.0/24" 
-        And its availability_zone is "us-west-2b"
+        And its availability_zone is "us-west-1b"
         And its map_public_ip_on_launch is false
         And it contains tags
         Then it must contain <tags>

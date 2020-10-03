@@ -1,7 +1,7 @@
 variable "aws_region" {
   type        = string
   description = "This is the region where the infrastructure will be provisioned"
-  default     = "us-west-2"
+  default     = "us-west-1"
 }
 variable "application_name" {
   type        = string
@@ -22,4 +22,12 @@ variable "public_cidrs" {
 variable "private_cidrs" {
   type        = map(list(string))
   description = "This is a map with the CIDR blocks for private subnets"
+}
+variable "insecure_port" {
+  type        = number
+  description = "This is the insecure port to allow ingress in security group "
+}
+variable "secure_port" {
+  type        = number
+  description = "This is the secure port to allow ingress in security group"
 }

@@ -1,5 +1,7 @@
 application_name   = "my-app"
-availability_zones = ["us-west-2a", "us-west-2b"]
+availability_zones = ["us-west-1a", "us-west-1b"]
+insecure_port      = 80
+secure_port        = 443
 
 
 
