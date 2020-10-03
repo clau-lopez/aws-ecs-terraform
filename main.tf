@@ -6,3 +6,11 @@ module "network" {
   public_cidrs       = var.public_cidrs
   private_cidrs      = var.private_cidrs
 }
+
+module "alb" {
+  source           = "./modules/alb"
+  application_name = var.application_name
+  insecure_port    = var.insecure_port
+  secure_port      = var.secure_port
+  vpc_id           = module.network.vpc_id
+}
