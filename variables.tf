@@ -31,3 +31,7 @@ variable "secure_port" {
   type        = number
   description = "This is the secure port to allow ingress in security group"
 }
+variable "bucket_prefix" {
+  type        = string
+  description = "This is the folder where the logs should be created"
+}

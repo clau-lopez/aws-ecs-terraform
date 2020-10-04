@@ -8,9 +8,11 @@ module "network" {
 }
 
 module "alb" {
-  source           = "./modules/alb"
-  application_name = var.application_name
-  insecure_port    = var.insecure_port
-  secure_port      = var.secure_port
-  vpc_id           = module.network.vpc_id
+  source             = "./modules/alb"
+  application_name   = var.application_name
+  insecure_port      = var.insecure_port
+  secure_port        = var.secure_port
+  bucket_prefix      = var.bucket_prefix
+  vpc_id             = module.network.vpc_id
+  public_subnets_ids = module.network.public_subnets_ids
 }

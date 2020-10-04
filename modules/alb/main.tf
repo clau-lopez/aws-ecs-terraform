@@ -31,3 +31,57 @@ resource "aws_security_group" "sg" {
     Environment = "${terraform.workspace}"
   }
 }
+
+# Data source to get Account ID
+data "aws_caller_identity" "current" {}
+
+# Data source to get the Account ID of the AWS Elastic Load Balancing Service Account in a given region
+data "aws_elb_service_account" "main" {}
+
+# AWS IAM Policy document
+data "aws_iam_policy_document" "policy" {
+  version = "2012-10-17"
+  statement {
+    actions   = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::${var.application_name}-alb-logs-${terraform.workspace}/${var.bucket_prefix}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["${data.aws_elb_service_account.main.arn}"]
+    }
+  }
+}
+
+# Bucket to store ALB logs
+resource "aws_s3_bucket" "lb_logs" {
+  bucket        = "${var.application_name}-alb-logs-${terraform.workspace}"
+  acl           = "private"
+  force_destroy = true
+  policy        = data.aws_iam_policy_document.policy.json
+
+  tags = {
+    Name        = "${var.application_name}-alb-logs-${terraform.workspace}"
+    Environment = "${terraform.workspace}"
+  }
+}
+
+# ALB: Application Load Balancer
+resource "aws_lb" "main" {
+  name                       = "${var.application_name}-alb-${terraform.workspace}"
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [aws_security_group.sg.id]
+  subnets                    = var.public_subnets_ids
+  enable_deletion_protection = false
+
+  access_logs {
+    bucket  = aws_s3_bucket.lb_logs.bucket
+    prefix  = var.bucket_prefix
+    enabled = true
+  }
+
+  tags = {
+    Name        = "${var.application_name}-alb-${terraform.workspace}"
+    Environment = "${terraform.workspace}"
+  }
+
+}

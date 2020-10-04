@@ -3,6 +3,8 @@ availability_zones = ["us-west-1a", "us-west-1b"]
 insecure_port      = 80
 secure_port        = 443
 
+bucket_prefix = "lb_logs"
+
 
 
 # Variables depending on environments
