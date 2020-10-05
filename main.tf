@@ -16,3 +16,8 @@ module "alb" {
   vpc_id             = module.network.vpc_id
   public_subnets_ids = module.network.public_subnets_ids
 }
+
+module "ecr" {
+  source           = "./modules/ecr"
+  application_name = var.application_name
+}
