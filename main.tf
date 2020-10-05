@@ -21,3 +21,10 @@ module "ecr" {
   source           = "./modules/ecr"
   application_name = var.application_name
 }
+
+module "ecs" {
+  source           = "./modules/ecs"
+  application_name = var.application_name
+  insecure_port    = var.insecure_port
+  vpc_id           = module.network.vpc_id
+}
