@@ -40,3 +40,29 @@ Feature: All resources for ALB should be created
       | tags        | value                    |
       | Name        | .+-alb-(tst\|dev)        |
       | Environment | ^(tst\|dev)$             |
+
+     Scenario Outline: ALB Target Group should be created
+        Given I have aws_alb_target_group resource configured
+        When its address is "module.alb.aws_alb_target_group.main"
+        And its port is 80
+        And its protocol is "HTTP"
+        And its target_type is "ip"
+        And it contains health_check
+        Then it must contain <property>
+        And its value must match the "<value>" regex
+      
+       Examples:
+      | property        | value                    |
+      | path            | /                        |
+      | port            | 80                       |
+      | timeout         | 3                        |
+      | matcher         | 200                      |
+
+
+      Scenario: ALB Listener to HTTP should be created
+        Given I have aws_alb_listener resource configured
+        When its name is "http"
+        And its port is 80
+        And its protocol is "HTTP"
+        Then it must contain default_action
+        And its type must be "forward"

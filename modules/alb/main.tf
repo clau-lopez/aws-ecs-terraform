@@ -83,5 +83,33 @@ resource "aws_lb" "main" {
     Name        = "${var.application_name}-alb-${terraform.workspace}"
     Environment = "${terraform.workspace}"
   }
+}
 
+# Target group
+resource "aws_alb_target_group" "main" {
+  name        = "${var.application_name}-tg-${terraform.workspace}"
+  port        = var.insecure_port
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+  depends_on  = [aws_lb.main]
+
+  health_check {
+    path    = "/"
+    port    = var.insecure_port
+    timeout = "3"
+    matcher = "200"
+  }
+}
+
+# Listener HTTP
+resource "aws_alb_listener" "http" {
+  load_balancer_arn = aws_lb.main.id
+  port              = var.insecure_port
+  protocol          = "HTTP"
+
+  default_action {
+    target_group_arn = aws_alb_target_group.main.id
+    type             = "forward"
+  }
 }
