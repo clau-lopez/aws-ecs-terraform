@@ -10,3 +10,11 @@ variable "vpc_id" {
   type        = string
   description = "This is vpc id used for other resources"
 }
+variable "container_port" {
+  type        = number
+  description = "This is the port used for container"
+}
+variable "repository_url" {
+  type        = string
+  description = "This is the URL of the repository"
+}

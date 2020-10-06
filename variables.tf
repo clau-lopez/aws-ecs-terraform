@@ -35,3 +35,13 @@ variable "bucket_prefix" {
   type        = string
   description = "This is the folder where the logs should be created"
 }
+variable "container_port" {
+  type        = number
+  description = "This is the port used for container"
+  default     = 80
+}
+variable "repository_url" {
+  type        = string
+  description = "This is the URL of the repository"
+  default     = ""
+}

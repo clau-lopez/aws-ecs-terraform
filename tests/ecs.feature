@@ -39,3 +39,11 @@ Feature: All resources for ECS should be created
         And its name is "ecs_task_execution_role_policy_attachment"
         Then it must contain role
         And its value must match the ".+-ecsTaskExecutionRole-(tst|dev)" regex
+
+    Scenario: ECS Task definition should be created
+        Given I have aws_ecs_task_definition resource configured
+        When its address is "module.ecs.aws_ecs_task_definition.main"
+        And its type is "aws_ecs_task_definition"
+        And its network_mode is "awsvpc"
+        And its requires_compatibilities is "FARGATE"
+        And it has execution_role_arn

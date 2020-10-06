@@ -56,3 +56,29 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy_attach
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+
+# Template file for container definitions
+data "template_file" "container_definitions" {
+  template = file("${path.module}/task-definitions/service.json.tpl")
+
+  vars = {
+    container_name  = "${var.application_name}-container-${terraform.workspace}"
+    container_image = "${var.repository_url}:latest"
+    container_port  = var.container_port
+  }
+}
+
+# Task Definition
+resource "aws_ecs_task_definition" "main" {
+  family                   = "${var.application_name}-task-${terraform.workspace}"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = "256"
+  memory                   = "512"
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  container_definitions    = data.template_file.container_definitions.rendered
+  tags = {
+    Name        = "${var.application_name}-task-${terraform.workspace}"
+    Environment = "${terraform.workspace}"
+  }
+}
