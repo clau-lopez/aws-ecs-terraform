@@ -38,7 +38,7 @@ variable "bucket_prefix" {
 variable "container_port" {
   type        = number
   description = "This is the port used for container"
-  default     = 80
+  default     = 8080
 }
 variable "repository_url" {
   type        = string

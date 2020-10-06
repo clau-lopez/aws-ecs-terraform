@@ -10,6 +10,10 @@ variable "container_port" {
   type        = number
   description = "This is the port used for container"
 }
+variable "insecure_port" {
+  type        = number
+  description = "This is the insecure port to allow ingress in security group "
+}
 variable "repository_url" {
   type        = string
   description = "This is the URL of the repository"

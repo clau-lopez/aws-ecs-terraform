@@ -26,6 +26,7 @@ module "ecs" {
   source               = "./modules/ecs"
   application_name     = var.application_name
   container_port       = var.container_port
+  insecure_port        = var.insecure_port
   vpc_id               = module.network.vpc_id
   repository_url       = module.ecr.repository_url
   private_subnets_ids  = module.network.private_subnets_ids

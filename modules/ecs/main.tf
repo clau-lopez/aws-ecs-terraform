@@ -5,7 +5,7 @@ resource "aws_security_group" "ecs_tasks" {
 
   ingress {
     protocol         = "tcp"
-    from_port        = var.container_port
+    from_port        = var.insecure_port
     to_port          = var.container_port
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
@@ -57,6 +57,19 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy_attach
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+# Cloudwatch log group
+resource "aws_cloudwatch_log_group" "logs-ecs" {
+  name = "${var.application_name}-log-ecs-${terraform.workspace}"
+
+  tags = {
+    Name        = "${var.application_name}-log-ecs-${terraform.workspace}"
+    Environment = "${terraform.workspace}"
+  }
+}
+
+# Data source to get current Region
+data "aws_region" "current" {}
+
 # Template file for container definitions
 data "template_file" "container_definitions" {
   template = file("${path.module}/task-definitions/service.json.tpl")
@@ -65,6 +78,8 @@ data "template_file" "container_definitions" {
     container_name  = "${var.application_name}-container-${terraform.workspace}"
     container_image = "${var.repository_url}:latest"
     container_port  = var.container_port
+    awslogs_group   = "${var.application_name}-log-ecs-${terraform.workspace}"
+    region          = data.aws_region.current.name
   }
 }
 
@@ -82,6 +97,7 @@ resource "aws_ecs_task_definition" "main" {
     Environment = "${terraform.workspace}"
   }
 }
+
 # ECS Service
 resource "aws_ecs_service" "main" {
   name                               = "${var.application_name}-ecs-service-${terraform.workspace}"
@@ -109,3 +125,4 @@ resource "aws_ecs_service" "main" {
     ignore_changes = [task_definition, desired_count]
   }
 }
+

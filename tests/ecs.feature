@@ -62,3 +62,10 @@ Feature: All resources for ECS should be created
         And it has load_balancer
         Then it must contain name
         And its value must match the "^.+-ecs-service-(tst|dev)$" regex
+
+    Scenario: Cloudwatch logs group should be created
+        Given I have aws_cloudwatch_log_group resource configured
+        When its address is "module.ecs.aws_cloudwatch_log_group.logs-ecs"
+        And its type is aws_cloudwatch_log_group
+        Then it must contain name
+        And its value must match the "^.+-log-ecs-(tst|dev)$" regex
