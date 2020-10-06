@@ -47,3 +47,18 @@ Feature: All resources for ECS should be created
         And its network_mode is "awsvpc"
         And its requires_compatibilities is "FARGATE"
         And it has execution_role_arn
+    
+    Scenario: ECS Service should be created
+        Given I have aws_ecs_service resource configured
+        When its address is "module.ecs.aws_ecs_service.main"
+        And it has cluster
+        And its desired_count is 2
+        And its deployment_minimum_healthy_percent is 50
+        And its deployment_maximum_percent is 200
+        And its launch_type is "FARGATE"
+        And its scheduling_strategy is "REPLICA"
+        And it has network_configuration
+        And it has assign_public_ip
+        And it has load_balancer
+        Then it must contain name
+        And its value must match the "^.+-ecs-service-(tst|dev)$" regex
