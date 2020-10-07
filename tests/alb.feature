@@ -54,7 +54,7 @@ Feature: All resources for ALB should be created
        Examples:
       | property        | value                    |
       | path            | /                        |
-      | port            | 80                       |
+      | port            | 8080                       |
       | timeout         | 3                        |
       | matcher         | 200                      |
 

@@ -14,6 +14,10 @@ variable "secure_port" {
   type        = number
   description = "This is the secure port to allow ingress in security group"
 }
+variable "container_port" {
+  type        = number
+  description = "This is the port used for container"
+}
 variable "public_subnets_ids" {
   type        = list
   description = "This is a list of public subnets ids used for other resources"

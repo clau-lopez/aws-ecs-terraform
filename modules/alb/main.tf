@@ -96,7 +96,7 @@ resource "aws_alb_target_group" "main" {
 
   health_check {
     path    = "/"
-    port    = var.insecure_port
+    port    = var.container_port
     timeout = "3"
     matcher = "200"
   }
