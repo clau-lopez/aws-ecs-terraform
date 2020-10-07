@@ -69,3 +69,48 @@ Feature: All resources for ECS should be created
         And its type is aws_cloudwatch_log_group
         Then it must contain name
         And its value must match the "^.+-log-ecs-(tst|dev)$" regex
+
+    Scenario: Autoscaling target for cluster ECS should be created
+        Given I have aws_appautoscaling_target resource configured
+        When its address is "module.ecs.aws_appautoscaling_target.ecs_target"
+        And its type is aws_appautoscaling_target
+        And its max_capacity is 4
+        And its min_capacity is 2
+        And its scalable_dimension is "ecs:service:DesiredCount"
+        And its service_namespace is "ecs"
+        Then it must contain resource_id
+        And its value must match the "service/.+-cluster-(tst|dev)/.+-ecs-service-(tst|dev)" regex
+
+    Scenario Outline: Autoscaling policy for memory should be created
+        Given I have aws_appautoscaling_policy resource configured
+        When its address is "module.ecs.aws_appautoscaling_policy.ecs_policy_memory"
+        And its type is aws_appautoscaling_policy
+        And its name is "memory-autoscaling"
+        And its policy_type is "TargetTrackingScaling"
+        And its scalable_dimension is "ecs:service:DesiredCount"
+        And its service_namespace is "ecs"
+        And it has target_tracking_scaling_policy_configuration
+        Then it must contain <property>
+        And its value must match the "<value>" regex
+
+        Examples:
+      | property                      | value                                 |          
+      | predefined_metric_type        | ECSServiceAverageMemoryUtilization    |
+      | target_value                  | 80                                    |
+
+ Scenario Outline: Autoscaling policy for cpu should be created
+        Given I have aws_appautoscaling_policy resource configured
+        When its address is "module.ecs.aws_appautoscaling_policy.ecs_policy_cpu"
+        And its type is aws_appautoscaling_policy
+        And its name is "cpu-autoscaling"
+        And its policy_type is "TargetTrackingScaling"
+        And its scalable_dimension is "ecs:service:DesiredCount"
+        And its service_namespace is "ecs"
+        And it has target_tracking_scaling_policy_configuration
+        Then it must contain <property>
+        And its value must match the "<value>" regex
+
+        Examples:
+      | property                      | value                                 |          
+      | predefined_metric_type        | ECSServiceAverageCPUUtilization       |
+      | target_value                  | 60                                    |
