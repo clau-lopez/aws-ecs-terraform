@@ -14,7 +14,6 @@ variable "private_cidrs" {
   type        = map(list(string))
   description = "This is a map with the CIDR blocks for private subnets"
 }
-
 variable "instance_class" {
   type        = string
   description = "This is an instance class for DB instance"
@@ -22,5 +21,13 @@ variable "instance_class" {
 variable "engine_version" {
   type        = string
   description = "This is the engine version for the engine used"
+}
+variable "database_name" {
+  type        = string
+  description = "This is the name of the database"
+}
+variable "allocated_storage" {
+  type        = number
+  description = "This is allocated storage for the database"
 }
 

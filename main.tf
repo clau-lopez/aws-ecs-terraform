@@ -36,8 +36,10 @@ module "ecs" {
 module "rds" {
   source              = "./modules/rds"
   application_name    = var.application_name
+  allocated_storage   = var.allocated_storage
   instance_class      = var.instance_class
   engine_version      = var.engine_version
+  database_name       = var.database_name
   private_cidrs       = var.private_cidrs
   private_subnets_ids = module.network.private_subnets_ids
   vpc_id              = module.network.vpc_id

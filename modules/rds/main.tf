@@ -51,11 +51,11 @@ locals {
 # RDS instance
 resource "aws_db_instance" "rds" {
   identifier             = "${var.application_name}-database-${terraform.workspace}"
-  allocated_storage      = 20
+  allocated_storage      = var.allocated_storage
   engine                 = "postgres"
   engine_version         = var.engine_version
   instance_class         = var.instance_class
-  name                   = "database${terraform.workspace}"
+  name                   = var.database_name
   username               = local.db_creds.username
   password               = local.db_creds.password
   db_subnet_group_name   = aws_db_subnet_group.subnet_group.id
