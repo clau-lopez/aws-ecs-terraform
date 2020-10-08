@@ -45,3 +45,11 @@ variable "repository_url" {
   description = "This is the URL of the repository"
   default     = ""
 }
+variable "instance_class" {
+  type        = string
+  description = "This is an instance class for DB instance"
+}
+variable "engine_version" {
+  type        = string
+  description = "This is the engine version for the engine used"
+}

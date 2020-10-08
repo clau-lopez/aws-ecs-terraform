@@ -3,6 +3,11 @@ availability_zones = ["us-west-1a", "us-west-1b"]
 insecure_port      = 80
 secure_port        = 443
 
+# Variables for RDS
+instance_class = "db.t2.micro"
+engine_version = "9.6.11"
+
+# Variables for ALB logs
 bucket_prefix = "lb_logs"
 
 
