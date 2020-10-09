@@ -31,6 +31,7 @@ module "ecs" {
   repository_url       = module.ecr.repository_url
   private_subnets_ids  = module.network.private_subnets_ids
   aws_alb_target_group = module.alb.aws_alb_target_group
+  endpoint_rds         = module.rds.endpoint_rds
 }
 
 module "rds" {

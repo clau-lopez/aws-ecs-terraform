@@ -23,3 +23,8 @@ variable "aws_alb_target_group" {
   type        = string
   description = "This is the target group for ALB"
 }
+
+variable "endpoint_rds" {
+  type        = string
+  description = "This is the endpoint to connect to RDS"
+}

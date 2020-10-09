@@ -3,20 +3,29 @@
       "name":"${container_name}",
       "image":"${container_image}",
       "essential":true,
+      "environment":[
+         {
+            "name":"DATABASE_URL",
+            "value":"${endpoint_rds}"
+         },
+         {
+            "name":"ENVIRONMENT",
+            "value":"${profile}"
+         }
+      ],
       "portMappings":[
          {
             "containerPort":${container_port},
             "hostPort":${container_port}
          }
       ],
-         "logConfiguration": {
-          "logDriver": "awslogs",
-          "options": {
-            "awslogs-group": "${awslogs_group}",
-            "awslogs-region": "${region}",
-            "awslogs-stream-prefix": "ecs"
-          }
-        
-     }
+      "logConfiguration":{
+         "logDriver":"awslogs",
+         "options":{
+            "awslogs-group":"${awslogs_group}",
+            "awslogs-region":"${region}",
+            "awslogs-stream-prefix":"ecs"
+         }
+      }
    }
 ]

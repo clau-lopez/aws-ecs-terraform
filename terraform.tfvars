@@ -2,6 +2,7 @@ application_name   = "my-app"
 availability_zones = ["us-west-1a", "us-west-1b"]
 insecure_port      = 80
 secure_port        = 443
+container_port     = 8080
 
 # Variables for RDS
 allocated_storage = 20

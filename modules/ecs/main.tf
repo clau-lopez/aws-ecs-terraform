@@ -80,6 +80,9 @@ data "template_file" "container_definitions" {
     container_port  = var.container_port
     awslogs_group   = "${var.application_name}-log-ecs-${terraform.workspace}"
     region          = data.aws_region.current.name
+    endpoint_rds    = var.endpoint_rds
+    profile         = terraform.workspace
+
   }
 }
 
