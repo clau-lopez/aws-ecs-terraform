@@ -81,12 +81,9 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      uses: actions/upload-artifact@v2
-      with: 
-        name: store
-        path: .
       run: |
         terraform workspace new $PROJECT_WORKSPACE || terraform workspace select $PROJECT_WORKSPACE ||
+        terraform workspace show
         terraform init -backend-config="region=$REGION" -backend-config="bucket=$BUCKET_NAME" -backend-config="key=$STATE_FILE_NAME"
         
     # Checks that all Terraform configuration files adhere to a canonical format
@@ -95,10 +92,9 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      uses: actions/download-artifact@v2
-      with: 
-        name: store
-      run: terraform plan
+      run: |
+        terraform workspace show
+        terraform plan
 
       # On push to master, build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
