@@ -52,6 +52,7 @@ env:
   BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
   STATE_FILE_NAME: ${{ secrets.STATE_FILE_NAME }}
   PROJECT_WORKSPACE: dev
+  TF_VERSION: 0.13.2
         
 on:
   push:
@@ -80,6 +81,10 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
+      uses: actions/upload-artifact@v2
+      with: 
+        name: store
+        path: .
       run: |
         terraform workspace new $PROJECT_WORKSPACE || terraform workspace select $PROJECT_WORKSPACE ||
         terraform init -backend-config="region=$REGION" -backend-config="bucket=$BUCKET_NAME" -backend-config="key=$STATE_FILE_NAME"
@@ -90,6 +95,9 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
+      uses: actions/download-artifact@v2
+      with: 
+        name: store
       run: terraform plan
 
       # On push to master, build or change infrastructure according to Terraform configuration files
