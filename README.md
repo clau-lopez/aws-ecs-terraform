@@ -74,7 +74,7 @@ terraform plan
 terraform apply
 ```
 
-### Bonus!!!
+## Bonus!!!
 I created a script to execute the next:
 
 * Format files into modules
