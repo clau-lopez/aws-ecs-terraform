@@ -38,7 +38,6 @@ terraform init \
 
 ```
 ### Running tests
-
 For testing the infrastructure I used terraform compliance, for more details visit the official documentation https://terraform-compliance.com. Test files are located in **_tests_** folder.
 
 **Important:**
@@ -64,3 +63,25 @@ Running tests
 terraform-compliance -p plan.json -f tests
 ```
 
+### Generate plan
+```
+terraform plan
+```
+
+### Apply changes
+
+```
+terraform apply
+```
+
+### Bonus!!!
+I created a script to execute the next:
+
+* Format files into modules
+* Terraform validate
+* Terraform plan
+* Run tests
+
+```
+./terraform-exec.sh
+```
