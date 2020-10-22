@@ -1,5 +1,9 @@
 # AWS ECS Terraform
 
+## Architecture
+
+![Demo Architecture Diagram](./img/architecture.jpeg)
+
 ## Deploying infrastructure
 
 ### Selecting a _workspace_
