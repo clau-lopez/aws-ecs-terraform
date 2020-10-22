@@ -1,8 +1,18 @@
 # AWS ECS Terraform
 
 ## Architecture
+The following architecture describes the use of ECS (AWS Elastic Container Service) for the deployment of microservices or web applications through containers and exposing them through a single point of entry, in this case, a load balancer and, also considering a database.
+
 
 ![Demo Architecture Diagram](./img/architecture.png)
+This architecture includes:
+
+* An architecture with high availability in which two Availability Zones are considered.
+* A VPC configured with public and private subnets.
+* An internet gateway to allow internet access
+* In the public subnets, NAT Gateways are provisioned to allow outbound Internet access for resources in the private subnets.
+* In the private subnets, an Amazon ECS cluster is provisioned and an Amazon RDS PostgreSQL database
+
 
 ## Deploying infrastructure
 
