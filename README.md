@@ -2,7 +2,7 @@
 
 ## Architecture
 
-![Demo Architecture Diagram](./img/architecture.jpeg)
+![Demo Architecture Diagram](./img/architecture.png)
 
 ## Deploying infrastructure
 
