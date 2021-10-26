@@ -5,7 +5,7 @@ variable "aws_region" {
 }
 variable "application_name" {
   type        = string
-  description = "This is the application name used for tagging resources"
+  description = "This is the application name useda"
 }
 variable "vpc_cidr_block" {
   type        = map
