@@ -4,8 +4,8 @@
 This is an example 1.
 
 This is other example 2.
-Example 3.
-example 4.
+Example 3.3
+example 4.4
 
 ### Selecting a _workspace_
 This project uses the feature provided by Terraform to select a workspace. I'm leveraging this feature in order to enable the code to be compatible with multiples environments. In other words, based on the workspaces this code can be deployed in, for instance, _development_ as **dev** or _production_ as **prod**. In this case I'm using `dev` and `prod`. 
